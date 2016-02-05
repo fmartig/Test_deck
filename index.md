@@ -1,26 +1,43 @@
 ---
-title       : Trying to publish a deck
+title       : Trying Slidify for the first time
 subtitle    : 
 author      : 
 job         : 
 framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
 highlighter : highlight.js  # {highlight.js, prettify, highlight}
 hitheme     : tomorrow      # 
-widgets     : []            # {mathjax, quiz, bootstrap}
+widgets     : [mathjax]            # {mathjax, quiz, bootstrap}
 mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
 ---
 
-## Read-And-Delete
+## Equations
 
-1. Edit YAML front matter
-2. Write using R Markdown
-3. Use an empty line followed by three dashes to separate slides!
+$$\frac{1}{n}\sum_{i=1}^n y_i$$
 
---- .class #id 
+--- 
 
-## Slide 2
+## Code
 
-This is annoying
+
+```r
+x<-(1:10)
+sum(x)
+```
+
+```
+## [1] 55
+```
+
+
+---
+## Slide 3
+
+Make a list:  
+* item 1  
+* item 2  
+
+Add a [link](http://slidify.org/start.html)
+
 
 
