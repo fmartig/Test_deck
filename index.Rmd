@@ -1,15 +1,16 @@
----
+--- 
 title       : Trying Slidify for the first time
-subtitle    : 
-author      : 
+subtitle    : Changing the style
+author      : Me
 job         : 
 framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
 highlighter : highlight.js  # {highlight.js, prettify, highlight}
-hitheme     : tomorrow      # 
+hitheme     : default      # 
 widgets     : [mathjax]            # {mathjax, quiz, bootstrap}
+ext_widgets : {rCharts: [libraries/nvd3]}
 mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
----
+--- 
 
 ## Equations
 
@@ -25,7 +26,7 @@ sum(x)
 ```
 
 
----
+--- 
 ## Slide 3
 
 Make a list:  
@@ -35,4 +36,35 @@ Make a list:
 Add a [link](http://slidify.org/start.html)
 
 
+---
+
+## Interactive Chart
+
+```{r echo = FALSE, results = 'asis', message=FALSE}
+require(rCharts)
+haireye = as.data.frame(HairEyeColor)
+n1 <- nPlot(Freq ~ Hair, group = 'Eye', type = 'multiBarChart', data = subset(haireye, Sex == 'Male'))
+n1$print('chart1')
+```
+
+--- &twocol
+
+## Two Column Layout   
+
+*** =left
+```{r echo=FALSE,message=FALSE,fig.height=6}
+library(ggplot2)
+data(diamonds)
+diamonds<-diamonds[sample(1:nrow(diamonds),2000),]
+ggplot(diamonds, aes(carat,price))+geom_point(color="cadetblue")
+```
+
+
+*** =right
+```{r echo=FALSE,fig.height=6}
+ggplot(diamonds, aes(carat, price, color=clarity))+geom_point()
+```
+
+*** =fullwidth
+Going back to full width
 

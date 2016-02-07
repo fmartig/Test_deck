@@ -1,8 +1,9 @@
 base
-methods
-datasets
-utils
-grDevices
-graphics
-stats
 slidify
+googleVis
+shiny
+slidifyLibraries
+XML
+knitr
+rCharts
+ggplot2
