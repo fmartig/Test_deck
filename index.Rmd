@@ -6,7 +6,7 @@ job         :
 framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
 highlighter : highlight.js  # {highlight.js, prettify, highlight}
 hitheme     : default      # 
-widgets     : [mathjax]            # {mathjax, quiz, bootstrap}
+widgets     : [mathjax, shiny, interactive, quiz]            # {mathjax, quiz, bootstrap}
 ext_widgets : {rCharts: [libraries/nvd3]}
 mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
@@ -14,45 +14,52 @@ knit        : slidify::knit2slides
 
 ## Equations
 
-$$\frac{1}{n}\sum_{i=1}^n y_i$$
+First, add "mathjax" to the widgets in the YAML. Then use $\LaTeX$ to write the equations.  
+Exemples:    
+
+1. The exponential distribution is defined by the probability density function $f(x,\lambda)=\lambda e^{-\lambda x}$ for $x\geq 0$ and with $\lambda$ the rate parameter.  
+
+2. $$\frac{1}{n}\sum_{i=1}^n y_i$$  
+
+3. $$SE=\frac{\sigma}{\sqrt{n}}=\frac{1}{\lambda\sqrt{n}}$$  
 
 --- 
 
 ## Code
 
+The way code is highlighted is controlled by the hitheme value in the YAML. This effect is the "default" one. "tomorrow" creates white rectangles.
 ```{r}
 x<-(1:10)
 sum(x)
 ```
 
 
---- 
-## Slide 3
+--- &vcenter
 
-Make a list:  
-* item 1  
-* item 2  
+## Center
 
-Add a [link](http://slidify.org/start.html)
-
+This is a test. I haven't managed to center the content and keep the horizontal grey line. If a do that, the content is centered horizontally only. 
 
 ---
 
-## Interactive Chart
+## Likn and list
 
-```{r echo = FALSE, results = 'asis', message=FALSE}
-require(rCharts)
-haireye = as.data.frame(HairEyeColor)
-n1 <- nPlot(Freq ~ Hair, group = 'Eye', type = 'multiBarChart', data = subset(haireye, Sex == 'Male'))
-n1$print('chart1')
-```
+Add a [link](http://slidify.org/start.html)  
+
+To reveal incrementally:  
+
+> * item 1  
+> * item 2     
+  
 
 --- &twocol
 
-## Two Column Layout   
+## Two Column Layout 
+
+Blabla
 
 *** =left
-```{r echo=FALSE,message=FALSE,fig.height=6}
+```{r echo=FALSE,message=FALSE,fig.height=5}
 library(ggplot2)
 data(diamonds)
 diamonds<-diamonds[sample(1:nrow(diamonds),2000),]
@@ -61,10 +68,164 @@ ggplot(diamonds, aes(carat,price))+geom_point(color="cadetblue")
 
 
 *** =right
-```{r echo=FALSE,fig.height=6}
+```{r echo=FALSE,fig.height=5}
 ggplot(diamonds, aes(carat, price, color=clarity))+geom_point()
 ```
 
 *** =fullwidth
-Going back to full width
+Can write something here.
+
+---
+## Interactive chart 
+
+Total emissions of air pollutants for the 5 countries with the highest levels of emissions in 2013 emissions (unit: 1000 tonnes).  
+
+```{r echo=FALSE,results='asis', comment=NA, message=FALSE, cache=FALSE,tidy=FALSE}
+top_emissions<-read.csv("~/Documents/Data_science/09_DataProducts/Exercises/air_pollutionEU/top_emissions.csv")
+library(reshape);library(rCharts);library(dplyr)
+m_top_emissions<-melt(top_emissions,id=c("X","unit","airpol","sect","locationvar"))
+m_top_emissions<-mutate(m_top_emissions,emissions=value/1000)
+n2<-nPlot(emissions ~ locationvar, 
+          group = 'airpol', type = 'multiBarChart', 
+          data =subset(m_top_emissions, variable=="X2013"))
+n2$print('topem2013')
+```
+
+
+--- &interactive 
+
+## Interactive map
+
+Emissions of NOx (tonnes) in Europe in 2013
+```{r results='asis', message=FALSE, echo=FALSE}
+library(dplyr)
+NOX.tot<-read.csv("~/Documents/Data_science/09_DataProducts/Exercises/air_pollutionEU/NOX_tot.csv")
+NOX.tot<-dplyr::rename(NOX.tot,Country=locationvar,Emissions=X2013)
+M2 <- gvisGeoChart(data = NOX.tot,
+                      locationvar = "Country",colorvar = "Emissions",
+                      options = list(region="150",displayMode="regions",
+                                     resolution="countries",
+                                     colorAxis="{colors:['#bbd2cb','#0C6D51']}",
+                                     width=700,height=400))
+T1<-gvisTable(data=NOX.tot[,c(5,6)], options=list(height=400))
+MT1<-gvisMerge(M2,T1, horizontal=TRUE)
+print(MT1,'chart')
+#print(M2,tag='chart')
+```
+
+--- &interactive
+
+## Interactive console
+
+Important note: use `runDeck()` and not `slidify()`to compile the slides.  
+Emissions of SOX in France by the top four sectors over the years.  
+```{r echo=FALSE, results='asis'}
+library(googleVis)
+sox_fr<-read.csv("~/Documents/Data_science/09_DataProducts/Exercises/air_pollutionEU/sox_fr.csv", stringsAsFactors=FALSE)
+sox_fr$time<-as.Date(sox_fr$time)
+M1<-gvisMotionChart(sox_fr[,3:8],idvar="sect", timevar="time", x="year",y="emission",options = list(width = 600, height = 400))
+print(M1, tag = 'chart')
+```
+
+---
+
+## Table - default style
+
+```{r results='asis',message=FALSE,echo=FALSE}
+code<-c("SE1_EPD","SE1_EUI","SE1_RD","SE2_IP")
+sectors<-c("Energy production and distribution","Energy use in industry","Road transport","Industrial processes and product use")
+sect_table<-data.frame(Code=code,Sector=sectors)
+library(knitr)
+kable(sect_table)
+```
+
+--- &vcenter
+
+## Table - customisation
+
+<table class=mytable>
+<tr> <th> Code </th> <th> Sector </th>  </tr>
+  <tr> <td> SE1_CIH </td> <td> Commercial, institutional and households </td> </tr>
+  <tr> <td> SE1_EPD </td> <td> Energy production and distribution </td> </tr>
+  <tr> <td> SE1_EUI </td> <td> Energy use in industry </td> </tr>
+  <tr> <td> SE1_NRD </td> <td> Non-road transport </td> </tr>
+  <tr> <td> SE1_RD </td> <td> Road transport </td> </tr>
+  <tr> <td> SE2_IP </td> <td> Industrial processes and product use </td> </tr>
+  <tr> <td> SE4_AGR </td> <td> Agriculture </td> </tr>
+  <tr> <td> SE6_WST </td> <td> Waste </td> </tr>
+  <tr> <td> SE7_OTH </td> <td> Other </td> </tr>
+  <tr> <td> TOT_NAT </td> <td> National total for the entire territory (based on fuel sold) </td> </tr>
+   </table>
+ 
+<style>
+table.mytable {
+  border: none;
+  width: 75%;
+  border-collapse: collapse;
+  font-size: 40px;
+  line-height: 40px;
+  font-family: 'Trebuchet MS';
+  font-weight: bolder;
+  color: #505050;
+}
+table.mytable th {
+  color: #F0F0F0 ;
+  background-color: #006666;
+}
+/*table.mytable tr:nth-child(2n+1) {
+  background: #FFFFFF;
+}*/
+table.mytable tr:nth-child(even) {
+    background-color: #c5d8d8;
+}
+table.mytable tr:nth-child(odd) {
+    background-color: #ffffff;
+
+</style>
+
+---
+
+## Table - customisation(2)
+
+The previous table was obtained by running the following code in the console after having created a data.frame with the wanted values.
+
+```{r, eval=FALSE}
+library(xtable)
+sectors.table<-xtable(sect_table)
+print(sectors.table,type="html", include.rownames=FALSE)
+```
+
+The output was pasted in this file and the first line was changed to: `<table class=mytable>`to match the name given in `<style>`.
+The css to modify the style was pasted <span class='blue'>after</span> the table.
+
+<span class='green'>Other option</span>: directly modify the table style in the custom.css file. That way, all the tables will have the same style. 
+
+
+--- &quote
+
+<q> Testing the quote thingy. Here it is, trying to have a quote that is long enough. The quote of the day thing is very cheesy and quite embarrassing.</q>
+
+--- &radio
+
+## Quiz
+
+What is 1+1?  
+
+1. 1  
+2. _2_  
+3. 3  
+4. 4  
+
+*** .hint 
+To give hints
+
+*** .explanation 
+Give and explain the answer
+
+--- 
+
+## Note on "bootstrap"
+
+It is recommended to add the "bootstrap" widget (YAML) when interactive elements are displayed (quiz, interactive console). However, that widget modifies the layout of the slide: content gets displayed on one half of the slide only. That can be quite annnoying. So, until I find how to override it (and let's be honest, I probably won't), I should remember to use "bootstrap" with parsimony and not panic when it changes all my "beautiful" slides.   
+
 

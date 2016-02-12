@@ -1,0 +1,122 @@
+slide:not(.segue)  h2{
+ font-family: "Open Sans Condensed";
+ font-weight: 500;
+ color: #1B1240;
+}
+
+.title-slide {
+  background-color: #FFFFFF /* #CBE7A5; #EDE0CF; #CA9F9D; #FFFFFF ; */
+  /* background-image:url(http://goo.gl/EpXln); */
+}
+
+.title-slide hgroup > h1{
+ font-family: 'Oswald', 'Helvetica', sanserif; 
+}
+
+.title-slide hgroup > h1{
+  color: #1B1240
+}
+.title-slide hgroup > h2 {
+  color: #9bd292 /*#909090 #1B1240 ; #535E43; #1B1240 ;*/
+}
+/* Quotes and Shout (for io2012, custom) */
+article q {
+  font-family: 'Crimson Text', serif;
+}
+
+q {
+  display: block;
+  font-size: 48px;
+  line-height: 60px;
+  margin-left: 100px;
+  margin-top: 150px;
+  margin-right: 100px;
+  color: #F8F8F8;
+}
+
+q::before {
+  content: '“';
+  position: absolute;
+  display: inline-block;
+  margin-left: -2.1em;
+  width: 2em;
+  text-align: right;
+  font-size: 90px;
+  color: silver;
+}
+
+q::after {
+  content: '”';
+  position: absolute;
+  margin-left: .1em;
+  font-size: 90px;
+  color: silver;
+}
+
+div.author {
+  text-align: right;
+  font-size: 40px;
+  margin-top: 20px;
+  margin-right: 150px;
+}
+
+div.author::before {
+  content: '—';
+}
+
+q.shout:before {
+  content: '';
+  position: absolute;
+  margin-left: -0.5em;
+}
+
+q.shout:after {
+  content: '';
+  position: absolute;
+  margin-left: 0.1em;
+}
+/* Tables */
+table caption{
+  margin-top: 20pt;
+  font-weight: normal;
+  font-family: "Trebuchet MS", Garuda, sans-serif;
+}
+
+table th {
+  text-transform: capitalize;
+}
+
+/* Tables */
+
+table {
+  border: none;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 24px;
+  line-height: 32px;
+  font-family: 'Trebuchet MS';
+  font-weight: bolder;
+  color: rgb(102, 102, 102);
+}
+table thead {
+  border-top: 1px solid #BFBEAD;
+  border-bottom: 1px solid #BFBEAD;
+}
+table th, table td, table caption {
+  margin: 0;
+  padding: 2pt 6pt;
+  text-align: left;
+  vertical-align: top;
+}
+table th {
+  background: #CFCEBD;
+  color: #575400;
+  text-transform: uppercase;
+}
+table td {
+  border-bottom: 1px solid #CFCEBD;
+}
+table tr:nth-child(2n+1) {
+/*  background: #E8F2FF; */
+  background: #EFEEDD;
+}
